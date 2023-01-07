@@ -1,25 +1,22 @@
 package client
 
 import (
-	"fmt"
-	"net"
-)
-
-const (
-	CONN_HOST = "localhost"
-	CONN_PORT = "3333"
-	CONN_TYPE = "tcp"
+	ioutil "io/ioutil"
+	"log"
+	"net/http"
 )
 
 func Client() {
-	conn, err := net.Dial(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
+	resp, err := http.Get("http://localhost:8080/health")
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatalln(err)
 	}
-	_, err = conn.Write([]byte("test message"))
+	//We Read the response body on the line below.
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return
+		log.Fatalln(err)
 	}
-
+	//Convert the body to type string
+	sb := string(body)
+	log.Printf(sb)
 }
