@@ -28,6 +28,24 @@ func responser(players []entities.Player) {
 		c.String(http.StatusAccepted, string(response))
 	})
 
+	r.POST("/update", func(c *gin.Context) {
+		player := entities.Player{}
+		err := c.BindJSON(&player)
+		if err != nil {
+			c.String(http.StatusBadRequest, "The player you want to generate is not compatible !")
+			return
+		}
+
+		players, err = UpdatePlayer(players, player)
+		if err != nil {
+			c.String(http.StatusBadRequest, err.Error())
+			return
+		}
+
+		response, _ := json.Marshal(players)
+		c.String(http.StatusAccepted, string(response))
+	})
+
 	r.POST("/disconnect", func(c *gin.Context) {
 		newPlayer := entities.Player{}
 		err := c.BindJSON(&newPlayer)
@@ -40,6 +58,11 @@ func responser(players []entities.Player) {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
+		response, _ := json.Marshal(players)
+		c.String(http.StatusAccepted, string(response))
+	})
+
+	r.GET("/infos", func(c *gin.Context) {
 		response, _ := json.Marshal(players)
 		c.String(http.StatusAccepted, string(response))
 	})
