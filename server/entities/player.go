@@ -1,5 +1,8 @@
 package entities
 
+type Players struct {
+	All []Player `json:"players"`
+}
 type Player struct {
 	Name string `json:"name"`
 

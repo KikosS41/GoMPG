@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func responser(players []entities.Player) {
+func responser(players entities.Players) {
 	r := gin.Default()
 
 	r.POST("/connect", func(c *gin.Context) {
@@ -18,7 +18,7 @@ func responser(players []entities.Player) {
 			return
 		}
 
-		err = AddNewPlayer(&players, newPlayer)
+		players, err = AddNewPlayer(players, newPlayer)
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
